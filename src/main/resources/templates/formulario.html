@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Calificación Final</title>
+    <style>
+        body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background-color:#f4f7f9;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0}.container{background-color:#fff;padding:40px;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.1);width:100%;max-width:500px}h1{text-align:center;color:#333;margin-bottom:30px}.form-group{margin-bottom:20px}label{display:block;margin-bottom:8px;font-weight:600;color:#555}input{width:100%;padding:12px;border:1px solid #ddd;border-radius:5px;box-sizing:border-box;transition:border-color .3s}input:focus{outline:none;border-color:#007bff}button{width:100%;padding:15px;background-color:#007bff;color:#fff;border:none;border-radius:5px;font-size:16px;font-weight:bold;cursor:pointer;transition:background-color .3s}button:hover{background-color:#0056b3}#resultado{margin-top:25px;padding:15px;border-radius:5px;text-align:center;font-size:1.1em}.success{background-color:#d4edda;color:#155724}.error{background-color:#f8d7da;color:#721c24}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Calificación</h1>
+
+        <form th:action="@{/calcular}" th:object="${estudianteDTO}" method="post">
+            <div class="form-group">
+                <label for="nombre">Nombre del Estudiante</label>
+                <input type="text" th:field="*{nombre}" placeholder="Ej: Ana Lucía Vinueza" required>
+            </div>
+            <div class="form-group">
+                <label for="cedula">Cédula del Estudiante</label>
+                <input type="text" th:field="*{cedula}" placeholder="Ej: 1712345678" required>
+            </div>
+            <div class="form-group">
+                <label for="asistencia">Nota de Asistencia (10%)</label>
+                <input type="number" th:field="*{asistencia}" min="0" max="10" step="0.1" placeholder="0 - 10" required>
+            </div>
+            <div class="form-group">
+                <label for="deberes">Nota de Deberes (20%)</label>
+                <input type="number" th:field="*{deberes}" min="0" max="10" step="0.1" placeholder="0 - 10" required>
+            </div>
+            <div class="form-group">
+                <label for="trabajos">Nota de Trabajos (30%)</label>
+                <input type="number" th:field="*{trabajos}" min="0" max="10" step="0.1" placeholder="0 - 10" required>
+            </div>
+            <div class="form-group">
+                <label for="examen">Nota de Examen (40%)</label>
+                <input type="number" th:field="*{examen}" min="0" max="10" step="0.1" placeholder="0 - 10" required>
+            </div>
+            <button type="submit">Calcular y Guardar Nota</button>
+        </form>
+
+        <div id="resultado">
+            <div th:if="${resultadoExitoso}" class="success">
+                <strong>¡Éxito!</strong> Estudiante guardado. <br>
+                La nota final de <span th:text="${resultadoExitoso.nombre}"></span> es: 
+                <strong><span th:text="${#numbers.formatDecimal(resultadoExitoso.notaFinal, 1, 2)}"></span></strong>
+            </div>
+
+            <div th:if="${error}" class="error">
+                <strong>Error:</strong> <span th:text="${error}"></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
